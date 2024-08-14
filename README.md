@@ -58,8 +58,3 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah berikut:
     <img src="https://github.com/rezapace/app-weding/blob/master/screenshoot/13.jpg?raw=true" alt="Screenshot 1" style="width: 48%;">
     <img src="https://github.com/rezapace/app-weding/blob/master/screenshoot/14.jpg?raw=true" alt="Screenshot 2" style="width: 48%;">
 </div>
-
-<div style="display: flex; justify-content: space-between;">
-    <img src="https://github.com/rezapace/app-weding/blob/master/screenshoot/15.jpg?raw=true" alt="Screenshot 1" style="width: 48%;">
-    <img src="https://github.com/rezapace/app-weding/blob/master/screenshoot/16.jpg?raw=true" alt="Screenshot 2" style="width: 48%;">
-</div>
