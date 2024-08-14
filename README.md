@@ -21,4 +21,4 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah berikut:
     git clone https://github.com/rezapace/reza.git
     ```
 
-2. Import database ke PHPMyAdmin.
+2. Import database ke PHPMyAdmin.a
