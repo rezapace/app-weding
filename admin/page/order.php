@@ -2,12 +2,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Check and start session if not already started
+// Check if session is not active, then start session
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Adjust relative path to db-connect.php
 require __DIR__ . '/../../db-connect.php';
 
 if (empty($_SESSION['ADMIN'])) {
@@ -17,20 +16,6 @@ if (empty($_SESSION['ADMIN'])) {
 
 date_default_timezone_set("Asia/Jakarta");
 
-if (isset($_GET['act']) && $_GET['act'] == 'delete-order') {
-    if (isset($_GET['id'])) {
-        $id = $_GET['id'];
-        $query = "DELETE FROM `order` WHERE id=?";
-        $stmt = $koneksi->prepare($query);
-        $stmt->execute([$id]);
-
-        if ($stmt) {
-            header("location:order.php?pesan=hapus");
-        } else {
-            header("location:order.php?pesan=gagalhapus");
-        }
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +27,25 @@ if (isset($_GET['act']) && $_GET['act'] == 'delete-order') {
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        @media print {
+            .print-header {
+                display: block;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .report-table th, .report-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    </style>
 </head>
 <body>
 
@@ -53,7 +57,7 @@ if (isset($_GET['act']) && $_GET['act'] == 'delete-order') {
             <li class="breadcrumb-item active">Order</li>
         </ol>
     </nav>
-</div><!-- End Page Title -->
+</div>
 
 <div class="mt-2">
     <?php if (isset($_GET['pesan'])) { ?>
@@ -75,6 +79,9 @@ if (isset($_GET['act']) && $_GET['act'] == 'delete-order') {
         <?php } elseif ($_GET['pesan'] == "gagalhapus") { ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 Failed to Delete Order Data
+                <?php if (isset($_GET['error'])) {
+                    echo "<br>Error: " . htmlspecialchars($_GET['error']);
+                } ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php } elseif ($_GET['pesan'] == "tambah") { ?>
@@ -86,73 +93,84 @@ if (isset($_GET['act']) && $_GET['act'] == 'delete-order') {
     <?php } ?>
 </div>
 
+<?php
+// Query untuk menampilkan data order
+$query = "SELECT * FROM `order` ORDER BY id ASC";
+$result = mysqli_query($koneksi2, $query);
+
+if (!$result) {
+    die("Query Error: " . mysqli_errno($koneksi2) . " - " . mysqli_error($koneksi2));
+}
+
+$num_rows = mysqli_num_rows($result);
+?>
+
 <section class="section dashboard">
     <a href="index.php?page=add-order" class="btn btn-primary my-3">Add Order</a>
+    <button onclick="window.print();" class="btn btn-danger my-3">Download PDF</button>
+
     <div class="row">
         <?php
-        $query = "SELECT * FROM `order` ORDER BY id ASC";
-        $result = mysqli_query($koneksi2, $query);
-
-        if (!$result) {
-            die("Query Error: " . mysqli_errno($koneksi2) . " - " . mysqli_error($koneksi2));
-        }
-
-        $num_rows = mysqli_num_rows($result);
-
         if ($num_rows > 0) {
             $no = 1;
-            while ($row = mysqli_fetch_assoc($result)) {
-                ?>
-                <div class="col-md-4">
-                    <div class="card order-card">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div class="name">
-                                    <h5 class="card-title">Order <?php echo $no ?></h5>
-                                </div>
-                                <div class="opsi py-3">
+            ?>
+            <div class="table-responsive">
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Paket</th>
+                            <th>Status</th>
+                            <th class="no-print">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            // Check order status
+                            $isCompleted = ($row['status'] === 'completed');
+                            // Generate Gmail link if status is completed
+                            if ($isCompleted) {
+                                $subject = urlencode('Order Confirmation');
+                                $body = urlencode("Dear {$row['nama']},\n\nYour order with package {$row['paket']} is confirmed.\n\nThank you!");
+                                $gmail_link = "https://mail.google.com/mail/u/0/?view=cm&fs=1&to={$row['email']}&su={$subject}&body={$body}";
+                                $emailButton = "<a href='$gmail_link' class='btn btn-primary btn-sm' target='_blank'><i class='bi bi-envelope'></i></a>";
+                            } else {
+                                $emailButton = "";
+                            }
+                            ?>
+                            <tr>
+                                <td><?php echo $no++; ?></td>
+                                <td><?php echo $row['nama']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo $row['paket']; ?></td>
+                                <td><?php echo $row['status']; ?></td>
+                                <td class="no-print">
                                     <a href="index.php?page=edit-order&id=<?php echo $row['id']; ?>" class="btn btn-success btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                    <a href="#" class="btn btn-danger btn-sm" onclick="deleteOrder(<?php echo $row['id']; ?>)"><i class="bi bi-trash-fill"></i></a>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <div class="order-details">
-                                    <p style="font-size: 11px;"><?php echo date('M d Y H:i:s', strtotime($row['created_at'])); ?></p>
-                                    <h6>Nama Pengirim: <?php echo $row['nama']; ?></h6>
-                                    <h5>Paket: <?php echo $row['paket']; ?></h5>
-                                    <p style="font-size: 14px; font-weight: 200;">Deskripsi: <?php echo $row['deskripsi']; ?></p>
-                                    <p style="font-size: 14px; font-weight: 200;">Status: <?php echo $row['status']; ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php
-                $no++;
-            }
+                                    <form action="order.php" method="get" style="display:inline;">
+                                    <a href="../action.php?act=delete-order&id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this order?')"><i class="bi bi-trash-fill"></i></a>
+                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                    </form>
+                                    <?php echo $emailButton; ?>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+            <?php
         } else {
-            echo "No data found.";
+            echo "<p>No orders available.</p>";
         }
         ?>
     </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-KE6siV0K0R57d9Jllshwq6b15nwlMhy8k4eCD8PohkkL3DO0xs4pG6K6r35oRIpO" crossorigin="anonymous"></script>
+<script src="../assets/js/main.js"></script>
 </body>
 </html>
-<script>
-function deleteOrder(id) {
-    if (confirm('Anda yakin akan menghapus data ini?')) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "../action.php?act=delete-order&id=" + id, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                document.getElementById('delete-order-result').innerHTML = xhr.responseText;
-                // Reload atau update data order di halaman
-                location.reload();
-            }
-        };
-        xhr.send();
-    }
-}
-</script>
-<div id="delete-order-result"></div>

@@ -1,14 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package Management</title>
+    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        @media print {
+            .print-header {
+                display: block;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .package-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .package-item h5 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
 <div class="pagetitle">
-    <h1>Packages</h1>
+    <h1>Catalog</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.php?page=dashboard">Home</a></li>
-            <li class="breadcrumb-item active">Packages</li>
+            <li class="breadcrumb-item active">Catalog</li>
         </ol>
     </nav>
 </div><!-- End Page Title -->
 
-<div class=" mt-2">
+<div class="mt-2">
   <?php if (isset($_GET['pesan'])) { ?>
     <?php if ($_GET['pesan'] == "berhasil") { ?>
       <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -51,15 +82,13 @@
 
 <section class="section packages">
     <a href="index.php?page=add-packages" class="btn btn-primary my-3">Add Data</a>
-    <div class="row">
+    <button id="downloadPDF" class="btn btn-danger my-3 no-print">Download PDF</button> <!-- Tombol Download PDF -->
+    <div class="row" id="packageContent"> <!-- Div dengan ID untuk mengkonversi ke PDF -->
         <?php
-        // jalankan query untuk menampilkan semua data diurutkan berdasarkan nim
         $query = "SELECT * FROM packages ORDER BY id ASC";
         $result = mysqli_query($koneksi2, $query);
-        //mengecek apakah ada error ketika menjalankan query
         if (!$result) {
-            die("Query Error: " . mysqli_errno($koneksi2) .
-                " - " . mysqli_error($koneksi2));
+            die("Query Error: " . mysqli_errno($koneksi2) . " - " . mysqli_error($koneksi2));
         }
         $no = 1;
         while ($row = mysqli_fetch_assoc($result)) {
@@ -96,3 +125,12 @@
 
     </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-KE6siV0K0R57d9Jllshwq6b15nwlMhy8k4eCD8PohkkL3DO0xs4pG6K6r35oRIpO" crossorigin="anonymous"></script>
+<script>
+document.getElementById('downloadPDF').addEventListener('click', function () {
+    window.print(); // Mencetak halaman dalam format PDF
+});
+</script>
+</body>
+</html>

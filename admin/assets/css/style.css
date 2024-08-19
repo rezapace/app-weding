@@ -10,8 +10,8 @@
 --------------------------------------------------------------*/
 :root {
   scroll-behavior: smooth;
-  --main-color: rgba(254, 70, 174, 1);
-  --main-color-hover: rgba(250, 89, 180, 1);
+  --main-color: rgb(70, 73, 254);
+  --main-color-hover: rgb(89, 145, 250);
   --second-color: rgba(33, 32, 45, 1);
   --main-font-color: rgba(255, 255, 255, 1);
   --second-font-color: rgba(255, 255, 255, 0.6);
@@ -1413,4 +1413,4 @@ h6 {
 
 
 
-/* Custom CSS rezapace */
+/* Custom CSS Rezapace */

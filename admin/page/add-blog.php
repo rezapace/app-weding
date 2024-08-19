@@ -11,8 +11,6 @@
 
 <section class="section dashboard">
     <div class="row">
-
-
         <div class="col-12">
             <div class="card blog-card">
                 <div class="card-body">
@@ -20,17 +18,16 @@
 
                     <form class="row g-3" method="POST" action="../action.php?act=add-blog" enctype="multipart/form-data">
                         <div class="col-md-4">
-                            <input name="id" value="<?php echo $data['id']; ?>" hidden />
                             <label class="form-label">Image</label>
-                            <input type="file" class="form-control" id="inputGroupFile02" name="blog_image" required="">
+                            <input type="file" class="form-control" id="inputGroupFile02" name="blog_image" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Heading</label>
-                            <input type="text" class="form-control" name="blog_heading" required="required" autocomplete="off">
+                            <input type="text" class="form-control" name="blog_heading" required autocomplete="off">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Description</label>
-                            <textarea id="editor1" class="form-control" name="blog_text" rows="5" required="required" autocomplete="off"></textarea>
+                            <textarea class="form-control" name="blog_text" rows="5" required autocomplete="off"></textarea>
                         </div>
                         <div class="text-end">
                             <button type="submit" class="btn btn-success">Submit</button>
@@ -39,6 +36,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </section>

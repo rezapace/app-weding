@@ -1,0 +1,14 @@
+di drive:
+
+upload dulu database nya
+trs tambahin tabel order. 
+lalu jdi kan id sebagai PK. 
+agar tdk double data nya saat di edit.
+
+
+dashboard.php
+=> untuk menambahkan order di dashboard 
+di line yg select * from order. dirubah jadi 
+
+$data_barang = mysqli_query($koneksi2, "SELECT * FROM `order`");
+

@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 
 :root {
-  --main-color: rgba(254, 70, 174, 1);
+  --main-color: rgba(70, 73, 254);
   --second-color: rgba(33, 32, 45, 1);
   --main-font-color: rgba(255, 255, 255, 1);
   --second-font-color: rgba(255, 255, 255, 0.6);
@@ -22,7 +22,7 @@ body {
 .btn-hero {
   color: #fff;
   text-decoration: none;
-  background-color: rgba(254, 70, 174, 0.7);
+  background-color: rgba(70, 73, 254);
   padding: 5px 20px;
   border-radius: 8px;
   transition: all 0.5s;
@@ -33,7 +33,7 @@ body {
 }
 .main-btn {
   color: #fff;
-  background-color: rgba(254, 70, 174, 0.7);
+  background-color: rgba(70, 73, 254);
   padding: 10px 30px;
   display: inline-block;
   text-decoration: none;

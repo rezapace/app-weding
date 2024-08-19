@@ -4,6 +4,10 @@ require 'db-connect.php';
 
 date_default_timezone_set("Asia/Jakarta");
 
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // proses login
 if (!empty($_GET['act'] == 'login')) {
   // validasi text untuk filter karakter khusus dengan fungsi strip_tags()
@@ -47,28 +51,39 @@ if (!empty($_GET['act']) && $_GET['act'] == 'register') {
   }
 }
 
-// order
-if (!empty($_GET['act'] == 'order')) {
-  $nama = $_POST['nama'];
-  $email = $_POST['email'];
-  $paket = $_POST['paket'];
-  $deskripsi = $_POST['deskripsi'];
-  $status = $_POST['status'];
+// Proses order
+if (!empty($_GET['act']) && $_GET['act'] == 'order') {
+    try {
+        // Retrieve form data
+        $nama = $_POST['nama'];
+        $email = $_POST['email'];
+        $paket = $_POST['paket'];
+        $deskripsi = $_POST['deskripsi'];
+        $status = $_POST['status'];
 
-  $query = "INSERT INTO `order` (nama, email, paket, deskripsi, status) VALUES (?, ?, ?, ?, ?)";
-  $stmt = $koneksi->prepare($query);
-  $stmt->execute([$nama, $email, $paket, $deskripsi, $status]);
-  
-  if ($stmt) {
-    echo '<script>window.location = "index.php?pesan=success#order";</script>';
-    echo '<script>alert("Order successfully created :)")</script>';
-  } else {
-    echo "Error: " . $stmt->errorInfo()[2];
-  }
+        // Check for required fields
+        if (empty($nama) || empty($email) || empty($paket) || empty($status)) {
+            throw new Exception("All fields are required.");
+        }
+
+        // Prepare and execute the query
+        $query = "INSERT INTO `order` (nama, email, paket, deskripsi, status) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $koneksi->prepare($query);
+
+        if ($stmt->execute([$nama, $email, $paket, $deskripsi, $status])) {
+            echo '<script>window.location = "index.php?pesan=success#order";</script>';
+        } else {
+            $errorInfo = $stmt->errorInfo();
+            throw new Exception("Failed to execute query: SQLSTATE[{$errorInfo[0]}]: {$errorInfo[2]}");
+        }
+    } catch (Exception $e) {
+        echo '<script>window.location = "index.php?pesan=failed#order";</script>';
+        echo "<p>Error: " . $e->getMessage() . "</p>";
+    }
 }
 
 // Tambah order
-if (!empty($_GET['act'] == 'add-order')) {
+if (!empty($_GET['act']) && $_GET['act'] == 'add-order') {
   $nama = $_POST['nama'];
   $email = $_POST['email'];
   $paket = $_POST['paket'];
@@ -87,51 +102,44 @@ if (!empty($_GET['act'] == 'add-order')) {
 }
 
 // Edit order
-if (!empty($_GET['act'] == "edit-order")) {
-  if (isset($_POST['id'])) {
-      if ($_POST['id'] != "") {
-          // Mengambil data dari form lalu ditampung didalam variabel
-          $id = $_POST['id'];
-          $nama = $_POST['nama'];
-          $email = $_POST['email'];
-          $paket = $_POST['paket'];
-          $deskripsi = $_POST['deskripsi'];
-          $status = $_POST['status'];
+if (!empty($_GET['act']) && $_GET['act'] == 'edit-order') {
+  $id = $_POST['id'];
+  $status = $_POST['status'];
 
-          // Update order data
-          $query = mysqli_query($koneksi2, "UPDATE `order` SET nama='$nama', email='$email', paket='$paket', deskripsi='$deskripsi', status='$status' WHERE id='$id'");
+  $query = "UPDATE `order` SET status=? WHERE id=?";
+  $stmt = $koneksi->prepare($query);
+  $stmt->execute([$status, $id]);
 
-          if ($query) {
-              echo "Order berhasil diupdate.";
-          } else {
-              echo "Error: " . mysqli_error($koneksi2);
-          }
-      } else {
-          echo "ID tidak valid.";
-      }
+  if ($stmt) {
+    echo "Order berhasil diupdate.";
   } else {
-      echo "ID tidak ditemukan.";
+    echo "Gagal mengupdate order: " . $stmt->errorInfo()[2];
   }
 }
 
 // Hapus order
-if (!empty($_GET['act'] == 'delete-order')) {
-  if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $query = "DELETE FROM `order` WHERE id=?";
-    $stmt = $koneksi->prepare($query);
-    $stmt->execute([$id]);
+if (!empty($_GET['act']) && $_GET['act'] == 'delete-order') {
+    try {
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $query = "DELETE FROM `order` WHERE id=?";
+            $stmt = $koneksi->prepare($query);
 
-    if ($stmt) {
-      echo "Order berhasil dihapus.";
-    } else {
-      echo "Error: " . $stmt->errorInfo()[2];
+            if ($stmt->execute([$id])) {
+                header("Location: admin/index.php?page=order&pesan=hapus");
+                exit();
+            } else {
+                $errorInfo = $stmt->errorInfo();
+                throw new Exception("Failed to execute query: SQLSTATE[{$errorInfo[0]}]: {$errorInfo[2]}");
+            }
+        } else {
+            throw new Exception("ID tidak ditemukan.");
+        }
+    } catch (Exception $e) {
+        header("Location: admin/index.php?page=order&pesan=gagalhapus&error=" . urlencode($e->getMessage()));
+        exit();
     }
-  } else {
-    echo "ID tidak ditemukan.";
-  }
 }
-
 
 // TAMBAH Features
 if (!empty($_GET['act'] == "add-features")) {
@@ -464,6 +472,7 @@ if (!empty($_GET['act'] == "add-blog")) {
   }
 }
 //  END TAMBAH blog
+
 
 // Edit blog
 if (!empty($_GET['act'] == "edit-blog")) {

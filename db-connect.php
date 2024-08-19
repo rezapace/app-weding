@@ -3,7 +3,7 @@
 $host = 'localhost';
 $user = 'root';
 $pass = 'p';
-$db = 'reza';
+$db = 'weding_reza';
 $koneksi2 = mysqli_connect($host, $user, $pass, $db); //pastikan urutan nya seperti ini, jangan tertukar
 
 if (!$koneksi2) {

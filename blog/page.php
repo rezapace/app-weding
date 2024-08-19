@@ -30,7 +30,7 @@ if (isset($_GET['id'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog - reza</title>
+    <title>Blog - Reza</title>
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon/apple-touch-icon.png">
@@ -56,7 +56,7 @@ if (isset($_GET['id'])) {
 <body>
     <nav id="navbar" class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">reza</a>
+            <a class="navbar-brand" href="../index.php">Reza</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -95,13 +95,13 @@ if (isset($_GET['id'])) {
         <div class="container">
             <div class="row justify-content-center">
                 <div class="footer-item col-lg-3 col-md-6 mb-4">
-                    <h3>reza</h3>
+                    <h3>Reza</h3>
                     <p>
-                        A108 Adam Street <br />
-                        New York, NY 535022<br />
-                        United States <br /><br />
-                        <strong>Phone:</strong> +1 5589 55488 55<br />
-                        <strong>Email:</strong> reza@gmail.com<br />
+                        Bekasi <br />
+                        Jakarta, JL AHMAD YANI<br />
+                        Indonesia <br /><br />
+                        <strong>Phone:</strong>+62 822-1081-1378<br />
+                        <strong>Email:</strong> m.rezahidayat.rh@gmail.com<br />
                     </p>
                 </div>
                 <div class="footer-item col-lg-3 col-md-6 mb-4">
@@ -116,12 +116,12 @@ if (isset($_GET['id'])) {
                     </ul>
                 </div>
                 <div class="footer-item col-lg-3 col-md-6">
-                    <h4>Our Social Networks</h4>
-                    <p>Cras fermentum odio eu feugiat lide par naso tierra videa magna derita valies</p>
+                    <h4>My Social Network</h4>
+                    <p>Hello iam Weding Organizer Best In Indonesia</p>
                     <div class="social-links mt-3">
-                        <a href="https://github.com/rezapace/" class="github" target="_blank"><i class="bi bi-github"></i></a>
+                        <a href="https://github.com/Rezapace/" class="github" target="_blank"><i class="bi bi-github"></i></a>
                         <a href="https://wa.me/6289608780861" class="whatsapp" target="_blank"><i class="bi bi-whatsapp"></i></a>
-                        <a href="https://www.instagram.com/rezapace" class="instagram" target="_blank"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.instagram.com/Rezapace" class="instagram" target="_blank"><i class="bi bi-instagram"></i></a>
                         <a href="mailto:iqbalprasetya665@gmail.com" class="gmail" target="_blank"><i class="bi bi-envelope"></i></a>
                     </div>
                 </div>
@@ -132,10 +132,10 @@ if (isset($_GET['id'])) {
     <section id="copyright" class="copyright">
         <div class="container text-center content-card">
             <p>
-                ©Copyright 2022 <span>reza</span>. All Rights Reserved
+                ©Copyright 2022 <span>Reza</span>. All Rights Reserved
             </p>
             <p>
-                Designed by <a href="https://github.com/rezapace/" target="_blank">reza</a>
+                Designed by <a href="https://github.com/Rezapace/" target="_blank">Reza</a>
             </p>
 
 

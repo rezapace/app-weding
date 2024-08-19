@@ -1,32 +1,36 @@
 <?php
-// session start
-if (!empty($_SESSION)) {
-} else {
+// Mulai sesi jika belum dimulai (note tambahan :  ini edit hanya untuk status order saja)
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-require '../db-connect.php';
-if (!empty($_SESSION['ADMIN'])) {
-} else {
-    echo '<script>alert("Maaf Login Dahulu !");window.location="login.php"</script>';
+
+// Periksa apakah admin sudah login 
+if (empty($_SESSION['ADMIN'])) {
+    echo '<script>alert("Maaf, login dahulu!"); window.location="login.php";</script>';
+    exit;
 }
 
-if (isset($_GET['id'])) {
-    $id = ($_GET["id"]);
+// Koneksi ke database
+require '../db-connect.php';
 
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+
+    // Ambil data order dari database
     $query = "SELECT * FROM `order` WHERE id='$id'";
     $result = mysqli_query($koneksi2, $query);
     if (!$result) {
-        die("Query Error: " . mysqli_errno($koneksi2) .
-            " - " . mysqli_error($koneksi2));
+        die("Query Error: " . mysqli_errno($koneksi2) . " - " . mysqli_error($koneksi2));
     }
     $data = mysqli_fetch_assoc($result);
-    if (!count($data)) {
-        echo "<script>alert('Data tidak ditemukan pada database');window.location='admin.php?page=order';</script>";
+    if (!$data) {
+        echo "<script>alert('Data tidak ditemukan pada database'); window.location='admin.php?page=order';</script>";
+        exit;
     }
 } else {
-    echo "<script>alert('Masukkan data id.');window.location='admin.php?page=order';</script>";
+    echo "<script>alert('Masukkan data id.'); window.location='admin.php?page=order';</script>";
+    exit;
 }
-
 ?>
 
 <div class="pagetitle">
@@ -48,22 +52,23 @@ if (isset($_GET['id'])) {
                     <h5 class="card-title">Edit Order</h5>
 
                     <form class="row g-3" id="edit-order-form">
+                        <input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
+
                         <div class="col-md-4">
-                            <input name="id" value="<?php echo $data['id']; ?>" hidden />
                             <label class="form-label">Name</label>
-                            <input type="text" class="form-control" name="nama" required="required" autocomplete="off" value="<?php echo $data['nama']; ?>">
+                            <input type="text" class="form-control" name="nama" readonly value="<?php echo $data['nama']; ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" required="required" autocomplete="off" value="<?php echo $data['email']; ?>">
+                            <input type="email" class="form-control" name="email" readonly value="<?php echo $data['email']; ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Package</label>
-                            <input type="text" class="form-control" name="paket" required="required" autocomplete="off" value="<?php echo $data['paket']; ?>">
+                            <input type="text" class="form-control" name="paket" readonly value="<?php echo $data['paket']; ?>">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" name="deskripsi" rows="5"><?php echo $data['deskripsi']; ?></textarea>
+                            <textarea class="form-control" name="deskripsi" rows="5" readonly><?php echo $data['deskripsi']; ?></textarea>
                         </div>
                         <div class="col-12">
                             <label class="form-label">Status</label>

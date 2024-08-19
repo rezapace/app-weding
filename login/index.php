@@ -12,7 +12,7 @@ if (!empty($_SESSION)) {
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Login - reza</title>
+  <title>Login - Wedding Organizer JeWePe</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -41,7 +41,7 @@ if (!empty($_SESSION)) {
     .card .card-title {
       color: #252525;
       text-decoration: underline;
-      text-decoration-color: rgba(254, 70, 174, 1);
+      text-decoration-color: rgba(70, 73, 254);
     }
 
     .form-control {

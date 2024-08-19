@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Register - reza</title>
+  <title>Register - Wedding Organizer JeWePe</title>
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .card .card-title {
       color: #252525;
       text-decoration: underline;
-      text-decoration-color: rgba(254, 70, 174, 1);
+      text-decoration-color: rgba(70, 73, 254);
     }
 
     .form-control {
