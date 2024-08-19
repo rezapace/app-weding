@@ -21,7 +21,11 @@ Untuk menjalankan proyek ini secara lokal, ikuti langkah-langkah berikut:
     git clone https://github.com/rezapace/reza.git
     ```
 
-2. Import database ke PHPMyAdmin.a
+2. Import database ke PHPMyAdmin.a database/reza.sql
+
+3. pastikan db connect nya sudah di rubah db-connect.php
+
+4. bika website http://localhost/app-wedding
 
 
 <div style="display: flex; justify-content: space-between;">
